@@ -1,4 +1,4 @@
-//import './Mylist.scss'
+import './Mylist.scss';
 import { useState, useEffect } from "react";
 import CardMyOffre from "../cardMyOffre/cardMyOffre";
 import OffreService from "../../services/OffreService";
