@@ -1,0 +1,186 @@
+@use "../../responsive.scss" as *;
+
+.App {
+  display: flex;
+  justify-content: flex-start; /* Aligns the form to the left */
+  align-items: center;
+  height: 100vh;
+  padding: 20px;
+}
+
+h2 {
+  padding-bottom: 7%;
+}
+
+.h2c {
+  color: #0f9e3a;
+}
+
+.pdn {
+  padding-left: 1%;
+  margin-left: 10%;
+}
+
+.form22 {
+  margin-bottom: 10%;
+  width: 580px;
+  padding: 16px;
+  border: 1px #ccc;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 20px 20px 20px 20px rgba(0, 0, 0, 0.1); /* Apply shadow to the form */
+}
+
+fieldset {
+  display: flex;
+  width: 100%; /* Ensure the fieldset takes up the full width of the form */
+  padding: 16px;
+  border: none; /* Removed border to apply shadow to the form itself */
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+sup {
+  color: red;
+  top: -2px;
+  font-size: 95%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+input,
+select {
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  height: 32px;
+  padding: 0 8px;
+}
+
+.Field {
+  position: relative;
+  padding-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  padding: 12px;
+  width: 240px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fece51;
+  color: white;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
+.imgContainer {
+  flex: 2;
+  background-color: #fcf5f3;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  @include md {
+    display: none;
+  }
+
+  img {
+    width: 115%;
+    position: absolute;
+    right: 0;
+
+    @include lg {
+      width: 105%;
+    }
+  }
+}
+
+.predictionResultModal {
+  background-color: rgba(0, 0, 0, 0.6); /* Fond semi-transparent */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 69px;
+  border-radius: 10px;
+  text-align: center;
+  max-width: 800px;
+  width: 80%;
+  height: 200px;
+  max-height: 500px; /* Limiter la hauteur maximale */
+  overflow-y: auto; /* Activer le défilement si le contenu dépasse la hauteur */
+  position: relative;
+}
+
+
+.h32 {
+  font-size: 1.7rem; /* Taille de police plus grande */
+  font-weight: bold;
+}
+
+.b1 {
+  font-size: 1.6rem; /* Taille légèrement plus grande pour les prix */
+}
+
+
+span.predicted-price {
+  color: green; /* Prix futur en vert */
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #fece51;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: white;
+}
+
+button:hover {
+  background-color: #f8b800; /* Assombrir le bouton au survol */
+}
+
+/* Button to close the modal */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  padding-bottom: 7%;
+}
+
+.close-btn:hover {
+  color: #fece51; /* Change color on hover */
+  font-weight: bold;
+}

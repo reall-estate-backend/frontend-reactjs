@@ -1,0 +1,142 @@
+.updatePostPage {
+    height: 100%;
+    display: flex;
+  
+    .formContainer {
+      flex: 3;
+      overflow: scroll;
+  
+      .wrapper {
+        margin: 30px 50px 100px 0px;
+  
+        form {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 20px;
+  
+          .item {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+  
+            label {
+              font-size: 16px;
+              font-weight: 500;
+              
+            }
+  
+            input {
+              padding: 20px;
+              border-radius: 5px;
+              border: 1px solid gray;
+            }
+            textarea {
+              width: 100%;
+              border: 1px solid #ccc;
+              border-radius: 8px;
+              padding: 12px;
+              font-size: 14px;
+              font-family: Arial, sans-serif;
+              resize: vertical; // Allows vertical resizing only
+              transition: border-color 0.3s;
+            }
+  
+            select {
+              padding: 19px;
+            }
+  
+            &.description {
+              width: 100%;
+              height: 320px;
+  
+              .quill > .ql-container > .ql-editor{
+                height: 200px;
+                font-size: 16px;
+              }
+            }
+          }
+          
+          .sendButton {
+            width: 30%;
+            height: 80px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+          
+            &:hover {
+              background-color: #0056b3;
+              transform: scale(1.05);
+            }
+          
+            &:disabled {
+              background-color: #cccccc;
+              cursor: not-allowed;
+            }
+            .error {
+                color: red;
+                font-weight: bold;
+            }
+          }
+          
+        }
+      }
+    }
+  
+    .sideContainer {
+      flex: 2;
+      background-color: #fcf5f3;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+  
+      img {
+        width: 50%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+    }
+    .imagePreview {
+        position: relative;
+        display: inline-block;
+        margin: 5px;
+    }
+    
+    .closeIconButton {
+        position: absolute;
+        top: -5px; /* Adjust position */
+        right: -5px; /* Adjust position */
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        line-height: 18px;
+        text-align: center;
+        cursor: pointer;
+        z-index: 10;
+        padding: 0;
+    }
+    
+    .closeIconButton:hover {
+        background-color: rgba(255, 0, 0, 0.9); /* Red hover effect */
+    }
+        
+}
+    

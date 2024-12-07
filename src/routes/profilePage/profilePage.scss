@@ -1,0 +1,92 @@
+.profilePage {
+  background-color: #f9f9f9;
+  padding: 20px;
+  min-height: 100vh;
+
+  .welcome {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+
+  .profile-header {
+    display: flex;
+    flex-direction: column; /* Empile l'avatar et le nom */
+    align-items: center; /* Centre l'avatar horizontalement */
+    justify-content: center; /* Centre l'avatar verticalement */
+    gap: 10px;
+    text-align: center;
+    margin-bottom: 20px; /* Ajoute un peu d'espace sous l'avatar */
+
+    .profile-avatar {
+      border-radius: 50%;
+      width: 150px; /* Agrandit l'avatar à 150px */
+      height: 150px;
+      object-fit: cover; /* Assure que l'avatar garde une forme circulaire avec un bon ajustement */
+    }
+
+    .profile-name {
+      font-size: 30px; /* Augmente la taille du texte du nom */
+      font-weight: bold;
+    }
+  }
+
+  .details {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+
+    .wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .info {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+
+      .info-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        color: #555;
+
+        .label {
+          font-weight: bold;
+        }
+
+        .value {
+          color: #333;
+        }
+
+        svg {
+          color: #fece51; /* Couleur des icônes */
+          font-size: 20px;
+        }
+      }
+    }
+
+    .update-button {
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+
+      &:hover {
+        background-color: #45a049;
+      }
+    }
+  }
+}
