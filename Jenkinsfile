@@ -40,7 +40,7 @@ pipeline {
                 }
             }
         }
-        /*stage('Deploy to Kubernetes') {
+        stage('Deploy to Kubernetes') {
             steps {
                 script {
                     withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG')]) {
@@ -55,6 +55,6 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
     }
 }
