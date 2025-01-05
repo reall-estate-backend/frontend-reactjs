@@ -1,17 +1,29 @@
-  import React, { useState } from 'react';
+  import React, { useState, useEffect } from 'react';
   import { useNavigate } from 'react-router-dom';
   import "./newPostPage.scss";
-  import OffreService from '../../services/OffreService';
   import { popularCities } from "../../lib/dummydata";
+  import { getAuthUser } from "../../helpers/apiService"; 
+  import { request } from "../../helpers/apiService"; 
+
 
   function NewPostPage() {
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+      const authUser = getAuthUser();
+      if (authUser) {
+        setUser(authUser);
+      }
+    }, []);
+
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const [formData, setFormData] = useState({
       title: '',
       price: '',
-      images: [], // img to images array
+      images: [], 
       address: '',
       city: '',
       bedroom: 1,
@@ -28,7 +40,7 @@
       schoolDistance: '',
       busDistance: '',
       restaurantDistance: '',
-      userId: '' // You'll need to replace this with actual user ID
+      userId: '' 
     });
 
     const [imagePreviews, setImagePreviews] = useState([]);
@@ -44,7 +56,6 @@
     const handleImageUpload = (e) => {
       const files = Array.from(e.target.files);
 
-      // Validate file types and sizes
       const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
       const maxSize = 5 * 1024 * 1024; // 5MB
 
@@ -75,24 +86,24 @@
       const previews = validFiles.map((file, index) => ({
         file,
         previewUrl: URL.createObjectURL(file),
-        index: formData.images.length + index + 1, // Image number (1, 2, 3, 4)
+        index: formData.images.length + index + 1,
       }));
 
       // Update the formData and imagePreviews
       setFormData(prevState => ({
         ...prevState,
-        images: [...prevState.images, ...validFiles], // Add images incrementally
+        images: [...prevState.images, ...validFiles], 
       }));
 
       setImagePreviews(prevState => [
-        ...prevState, ...previews // Update image previews with file preview URLs and indices
+        ...prevState, ...previews 
       ]);
     };
     const handleRemoveImage = (index) => {
       // Remove the selected image based on index
       setFormData((prevState) => {
         const updatedImages = [...prevState.images];
-        updatedImages.splice(index, 1); // Remove the image at the selected index
+        updatedImages.splice(index, 1);
         return {
           ...prevState,
           images: updatedImages,
@@ -101,7 +112,7 @@
     
       setImagePreviews((prevState) => {
         const updatedPreviews = [...prevState];
-        updatedPreviews.splice(index, 1); // Remove the preview at the selected index
+        updatedPreviews.splice(index, 1); 
         return updatedPreviews;
       });
     };
@@ -132,11 +143,11 @@
 
         // Prepare the offer request object matching your backend structure
         const offerRequest = {
-          userId: "67477a5a7e8cf83850b79b91", // Replace with actual user ID
+          userId: user.id, 
           immobilierRequest: {
             title: formData.title,
             bedroom: parseInt(formData.bedroom),
-            images: imagesBase64, // Send base64 encoded images
+            images: imagesBase64,
             bathroom: parseInt(formData.bathroom),
             price: parseFloat(formData.price),
             address: formData.address,
@@ -157,10 +168,10 @@
         };
 
         // Send POST request to backend
-        const response = await OffreService.saveOffer(offerRequest);
+        const response = await request('POST', '/api/v1/users/addOffre', offerRequest);
 
         if (response && response.data) {
-          alert('Offer created successfully! Offer ID: ' + response.data);
+          //alert('Offer created successfully! Offer ID: ' + response.data);
           navigate('/Myspace');
         } else {
           throw new Error('Failed to create offer.');
@@ -175,9 +186,9 @@
     };
 
     return (
-      <div className="newPostPage">
+      <div className="newPostPage" >
         <div className="formContainer">
-          <h1>Add New Post</h1>
+          <h1>Add New Post</h1><hr/>
           <div className="wrapper">
             <form onSubmit={handleSubmit}>
               <div className="item">
@@ -191,42 +202,7 @@
                   required 
                 />
               </div>
-              <div className="item imageUploadItem">
-                <label htmlFor="imageUpload">Property Images (Exactly 4 Required)</label>
-                <input 
-                  id="imageUpload" 
-                  name="images" 
-                  type="file" 
-                  accept="image/jpeg,image/png,image/gif"
-                  onChange={handleImageUpload}
-                  multiple // Allow multiple file selection
-                  required 
-                />
-                {imagePreviews.length > 0 && (
-                  <div className="imagePreviewContainer">
-                    {imagePreviews.map((preview, index) => (
-                      <div key={index} className="imagePreview" style={{ position: 'relative' }}>
-                        {/* Close Button */}
-                        <button
-                          type="button"
-                          className="closeIconButton"
-                          onClick={() => handleRemoveImage(index)}
-                        >
-                          ✕ {/* X icon */}
-                        </button>
-                        {/* Image Preview */}
-                        <img
-                          src={preview.previewUrl}
-                          alt={`Property Image ${index + 1}`}
-                          style={{ maxWidth: '150px', maxHeight: '150px', margin: '5px' }}
-                        />
-                        <div>Image {index + 1}</div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <div className="imageCount">{imagePreviews.length} / 4 images selected</div>
-              </div>
+
               <div className="item">
                 <label htmlFor="price">Price</label>
                 <input 
@@ -312,21 +288,7 @@
                   required 
                 />
               </div>
-              <div className="item descriptionItem">
-                <label htmlFor="description">Description</label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  rows="6" // Increases the height of the textarea
-                  maxLength="2000" // Limits the maximum number of characters
-                  required
-                />
-                <div className="characterCount">
-                  {formData.description.length} / 2000 characters
-                </div>
-              </div>
+
               <div className="item">
                 <label htmlFor="type">Type</label>
                 <select 
@@ -434,13 +396,95 @@
                   required
                 />
               </div>
-              <button type="submit" className="sendButton" disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : 'Save'}
-              </button>
+              
+              <div className="item imageUploadItem">
+                <label htmlFor="imageUpload">Property Images (Exactly 4 Required)</label>
+                <input 
+                  id="imageUpload" 
+                  name="images" 
+                  type="file" 
+                  accept="image/jpeg,image/png,image/gif"
+                  onChange={handleImageUpload}
+                  multiple
+                  required 
+                />
+                {imagePreviews.length > 0 && (
+                  <div className="imagePreviewContainer">
+                    {imagePreviews.map((preview, index) => (
+                      <div key={index} className="imagePreview" style={{ position: 'relative' }}>
+                        {/* Close Button */}
+                        <button
+                          type="button"
+                          className="closeIconButton"
+                          onClick={() => handleRemoveImage(index)}
+                        >
+                          ✕ {/* X icon */}
+                        </button>
+                        {/* Image Preview */}
+                        <img
+                          src={preview.previewUrl}
+                          alt={`Property Image ${index + 1}`}
+                          style={{ maxWidth: '150px', maxHeight: '150px', margin: '5px' }}
+                        />
+                        <div>Image {index + 1}</div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className="imageCount">{imagePreviews.length} / 4 images selected</div>
+              </div>
+              <div className="itemDesc descriptionItem">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows="6" // Increases the height of the textarea
+                  maxLength="2000" // Limits the maximum number of characters
+                  required
+                />
+                <div className="characterCount">
+                  {formData.description.length} / 2000 characters
+                </div>
+              </div>
+        
+              <button
+              type="submit" className="sendButton" disabled={isSubmitting}
+              style={{
+                marginLeft: "90%",
+                backgroundColor: "#fece51",
+                color: "black",
+                fontSize: "20px",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                transition: "background-color 0.3s ease, transform 0.2s ease",
+                maxWidth: "200px",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = "#f0b600";
+                e.target.style.transform = "scale(1.05)";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = "#fece51";
+                e.target.style.transform = "scale(1)";
+              }}
+              onFocus={(e) => {
+                e.target.style.outline = "none";
+                e.target.style.boxShadow = "0 0 5px rgba(254, 206, 81, 0.7)";
+              }}
+              onBlur={(e) => {
+                e.target.style.boxShadow = "none";
+              }}
+            >
+              {isSubmitting ? 'Saving...' : 'Save'}
+            </button>
+
             </form>
           </div>
         </div>
-        <div className="sideContainer"></div>
+       
       </div>
     );
   }

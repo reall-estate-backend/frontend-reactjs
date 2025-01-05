@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import UserService from "../../services/UserService";
 import "./profileUpdatePage.scss";
+import { request } from "../../helpers/apiService"; 
+
 
 function ProfileUpdatePage() {
   const [user, setUser] = useState({
@@ -12,34 +13,22 @@ function ProfileUpdatePage() {
     phone: "",
   });
 
-  const { userId } = useParams(); // Récupérer l'ID de l'utilisateur depuis l'URL
+  const { userId } = useParams(); 
   const navigate = useNavigate();
 
+    const getUser = async () => {
+      try {
+        const response = await request("GET", `/api/v1/users/${userId}`);
+         setUser(response.data);
+      } catch (err) {
+        setError(err.message);
+      } 
+    };
 
-  useEffect(() => {
-    if (userId) {
-      console.log("Fetching user with ID:", userId);
-      UserService.getUserById(userId)
-          .then((response) => {
-            if (response.data) {
-              setUser(response.data);
-              console.log("User data fetched:", response.data);
-            } else {
-              console.log("No user data found for the given ID");
-            }
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error);
-          });
-    } else {
-      console.log("No userId provided");
-    }
-  }, [userId]);
+      useEffect(() => {
+        getUser();
+      }, [userId]); 
 
-
-  useEffect(() => {
-    console.log("User state has been updated:", user);
-  }, [user]);
 
 
   const handleChange = (e) => {
@@ -50,17 +39,25 @@ function ProfileUpdatePage() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    UserService.updateUser(user)
-        .then((response) => {
-          navigate('/profile');
-        })
-        .catch((error) => {
-          console.error("Error updating user data:", error);
-        });
+    try {
+      const updatedUser = { ...user, id: userId };
+      console.log("Sending user data:", updatedUser);
+      const response = await request("PUT", `/api/v1/users`, updatedUser);
+      if (response && response.status === 202) {
+        console.log("User profile updated successfully.");
+        navigate('/profile'); 
+      } else {
+        throw new Error('Failed to update user profile.');
+      }
+    } catch (error) {
+      console.error("Error during profile update:", error.response?.data || error.message);
+    }
   };
 
+
+  
   return (
       <div className="profileUpdatePage">
         <div className="formContainer">

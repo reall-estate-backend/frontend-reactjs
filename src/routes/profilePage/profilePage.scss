@@ -1,92 +1,143 @@
-.profilePage {
-  background-color: #f9f9f9;
-  padding: 20px;
-  min-height: 100vh;
 
-  .welcome {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #333;
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+
+/* Pour le conteneur principal */
+.container {
+  display: flex;
+  justify-content: space-between; /* Assure qu'il y a un espace égal entre les sections */
+  align-items: flex-start; /* Aligne les éléments en haut */
+  padding: 24px; /* Ajoute un peu d'espace autour du conteneur */
+}
+
+/* Les deux sections gauche et droite auront la même taille */
+.left, .right {
+  flex: 1; /* Les deux sections auront une taille égale */
+  padding: 20px; /* Vous pouvez ajuster l'espace intérieur si nécessaire */
+}
+
+/* Optional: Si vous voulez ajuster l'image dans la section droite */
+.right img {
+  width: 100%; /* L'image prend toute la largeur disponible */
+  height: auto; /* Garde l'aspect de l'image */
+}
+
+
+
+
+body {
+  color: #333;
+  background: #fcfcfc;
+  font-family: 'Raleway', sans-serif;
+  overflow-x: hidden;
+}
+
+.faq-header{
+  font-size: 42px;
+  border-bottom: 1px dotted #ccc;
+  padding: 24px;
+  display: flex;         
+  align-items: center;  
+}
+
+.faq-content {
+  margin: 0 auto;
+}
+
+.faq-question {
+  padding: 20px 0;
+  border-bottom: 1px dotted #ccc;
+}
+
+.panel-title {
+  font-size: 24px;
+  width: 100%;
+  position: relative;
+  margin: 0;
+  padding: 10px 10px 0 48px;
+  display: block;
+  cursor: pointer;
+}
+
+.panel-content {
+  font-size: 20px;
+  padding: 0px 14px;
+  margin: 0 40px;
+  height: 0;
+  overflow: hidden;
+  z-index: -1;
+  position: relative;
+  opacity: 0;
+  -webkit-transition: .4s ease;
+  -moz-transition: .4s ease;
+  -o-transition: .4s ease;
+  transition: .4s ease;
+}
+
+.panel:checked ~ .panel-content{
+  height: auto;
+  opacity: 1;
+  padding: 14px;
+}
+
+.plus {
+  position: absolute;
+  margin-left: 20px;
+  margin-top: 4px;
+  z-index: 5;
+  font-size: 42px;
+  line-height: 100%;
+  -webkit-user-select: none;    
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-transition: .2s ease;
+  -moz-transition: .2s ease;
+  -o-transition: .2s ease;
+  transition: .2s ease;
+}
+
+.panel:checked ~ .plus {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.panel {
+  display: none;
+}
+
+
+.updateButton {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-right: 16px; 
+
+  .profile-avatar {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
   }
 
-  .profile-header {
-    display: flex;
-    flex-direction: column; /* Empile l'avatar et le nom */
-    align-items: center; /* Centre l'avatar horizontalement */
-    justify-content: center; /* Centre l'avatar verticalement */
-    gap: 10px;
-    text-align: center;
-    margin-bottom: 20px; /* Ajoute un peu d'espace sous l'avatar */
-
-    .profile-avatar {
-      border-radius: 50%;
-      width: 150px; /* Agrandit l'avatar à 150px */
-      height: 150px;
-      object-fit: cover; /* Assure que l'avatar garde une forme circulaire avec un bon ajustement */
-    }
-
-    .profile-name {
-      font-size: 30px; /* Augmente la taille du texte du nom */
-      font-weight: bold;
-    }
+  .profile-name {
+    font-size: 30px;
+    font-weight: bold;
   }
 
-  .details {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-
-    .wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .info {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-
-      .info-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 18px;
-        color: #555;
-
-        .label {
-          font-weight: bold;
-        }
-
-        .value {
-          color: #333;
-        }
-
-        svg {
-          color: #fece51; /* Couleur des icônes */
-          font-size: 20px;
-        }
-      }
-    }
-
-    .update-button {
-      padding: 10px 20px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-      margin-top: 20px;
-
-      &:hover {
-        background-color: #45a049;
-      }
-    }
-  }
 }

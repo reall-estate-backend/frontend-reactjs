@@ -29,7 +29,7 @@ function Card({ item }) {
           </div>
           <div className="icons">
             <div className="icon">
-              <Link to={`/prediction/${item.id}`} >
+            <Link to={`/prediction/${item.id}`}>
                 <img src="/prediction.png" alt="" />
               </Link>
             </div>

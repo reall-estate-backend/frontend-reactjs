@@ -3,10 +3,30 @@ import "./Pracing.scss";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
-import PaymentService from "../../services/PaymentService";
+import { request } from "../../helpers/apiService"; 
+import { getAuthUser } from "../../helpers/apiService";
+
 
 function Pracing({ userId }) {
-  const user = "6749a2da6dc00c756ad0d6d1";
+
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    const getUser = async () => {
+      const authUser = getAuthUser();
+      if (authUser) {
+        console.log(user);
+        try {
+          const response = await request("GET", `/api/v1/users/${authUser.id}`);
+          setUser(response.data);
+        } catch (err) {
+          setError(err.message);
+        }
+      }
+    };
+    getUser();
+  }, []);
+
+
   const [showForm, setShowForm] = useState(true);
   const [pricePlan, setPricePlan] = useState(0);
   const [namePlan, setNamePlan] = useState("");
@@ -20,7 +40,7 @@ function Pracing({ userId }) {
   
     const newSubscription = {
       namePlan: name,
-      userId: user,  
+      userId: user.id,  
       nbrPrediction: 0,
     };
   
@@ -29,19 +49,19 @@ function Pracing({ userId }) {
     const fetchSubscription = async () => {
       try {
         // Récupérer toutes les souscriptions
-        const response = await PaymentService.getAllSubscriptions();
+        const response = await request("GET", "/api/v1/users/allSubscriptions");
         const allSubscriptions = response.data;
   
         // Chercher la souscription de l'utilisateur
-        const userSubscription = allSubscriptions.find(sub => sub.userId === user);
+        const userSubscription = allSubscriptions.find(sub => sub.userId === user.id);
         if (userSubscription) {
           // Supprimer la dernière souscription de l'utilisateur
-          await PaymentService.deleteSubscription(user);
+          await request('DELETE', `/api/v1/users/deleteSubscription/${user.id}`); 
           console.log("Ancienne souscription supprimée avec succès.");
         }
   
         // Enregistrer la nouvelle souscription
-        const saveResponse = await PaymentService.saveSubscription(newSubscription);
+        const saveResponse = await request("POST", "/api/v1/users/createSubscription",newSubscription);
         console.log("Nouvelle souscription enregistrée avec succès", saveResponse);
   
       } catch (err) {
@@ -49,7 +69,7 @@ function Pracing({ userId }) {
         setError("Une erreur est survenue lors de la gestion de la souscription.");
       }
     };
-  
+   
     fetchSubscription();
   };
   
@@ -59,7 +79,8 @@ function Pracing({ userId }) {
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:5252/config").then(async (r) => {
+    //https://stripeproject.onrender.com
+    fetch("https://stripeproject.onrender.com/config").then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
     });
@@ -67,7 +88,7 @@ function Pracing({ userId }) {
 
   useEffect(() => {
     if (pricePlan) {
-      fetch(`http://localhost:5252/create-payment-intent/${pricePlan * 100}`, {
+      fetch(`https://stripeproject.onrender.com/create-payment-intent/${pricePlan * 100}`, {
         method: "POST",
       }).then(async (result) => {
         const { clientSecret } = await result.json();

@@ -1,21 +1,41 @@
 import { useState } from "react";
 import "./chat.scss";
+import { request } from "../../helpers/apiService"; 
+import { useEffect } from "react";
 
-function Chat() {
+function Chat({ sellerId }) {
   const [chat, setChat] = useState(true);
+  const [seller, setSeller] = useState(true);
+  const [error, setError] = useState(null);
+
+  const getSeller = async () => {
+    try {
+      let response;
+      response = await request("GET", `/api/v1/users/${sellerId}`);
+      setSeller(response.data);
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getSeller();
+  }, [sellerId]);
+
   return (
     <div className="chat">
       <div className="messages">
         <h1>Contact seller</h1>
         <div className="message">
           <img
-            src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+            src="/seller.webp"
             alt=""
           />
-          <span>John Doe</span>
-          <p>Lorem ipsum dolor sit amet...</p>
+          <span>{seller.firstName}{" "}{seller.lastName}</span>
+          <span>{seller.email}</span>
+          <span>{seller.phone}</span>
         </div>
-        <div className="message">
+    {/*    <div className="message">
           <img
             src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
             alt=""
@@ -116,6 +136,8 @@ function Chat() {
           </div>
         </div>
       )}
+      */}
+    </div>
     </div>
   );
 }

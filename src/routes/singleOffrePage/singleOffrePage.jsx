@@ -3,30 +3,29 @@ import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
 import { userData } from "../../lib/dummydata"; // Supposé que 'userData' est fourni quelque part
 import Chat from "../../components/chat/Chat";
-import OffreService from "../../services/OffreService";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { request } from "../../helpers/apiService"; 
+
 
 function SingleOffrePage() {
   // État pour les détails de l'offre, le chargement et l'erreur
   const [offre, setOffre] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [seller, setSeller] = useState(null);
 
-  // Récupérer l'ID de l'offre depuis l'URL
+
   const { id } = useParams();
 
-  // Fonction pour récupérer les détails de l'offre
   const getOffreDetails = async () => {
     setLoading(true);
     setError(null);
     try {
       let response;
-      response = await OffreService.getOfferById(id);
-
-
+      response = await request("GET", `/api/v1/users/getOffre/${id}`);
       setOffre(response.data);
-
+      console.log(offre);
     } catch (err) {
       setError(err.message);
     } finally {    
@@ -34,31 +33,30 @@ function SingleOffrePage() {
     }
   };
 
-  // Utiliser useEffect pour appeler la fonction lors du chargement du composant
+
+
+
+
   useEffect(() => {
     getOffreDetails();
-    console.log("Offre loaded:", offre);  // Affiche l'objet 'offre' quand il est mis à jour
+    console.log("Offre loaded:", offre);  
 
   }, [id]);
 
-    // Utiliser un autre useEffect pour observer les changements de 'offre'
     useEffect(() => {
-      console.log("Offre loaded:", offre);  // Affiche 'offre' quand il est mis à jour
+      console.log("Offre loaded:", offre);  
     }, [offre]);
 
-  // Si les données sont en cours de chargement
   if (loading) return <div>Loading...</div>;
 
-  // Si une erreur s'est produite lors de la récupération des données
   if (error) return <div>Error: {error}</div>;
 
-  // Si aucune offre n'est trouvée
   if (!offre) return <div>Offer not found</div>;
 
-  const immobilierResponse = offre?.immobilierResponse || {}; // Vérifiez si `immobilierResponse` existe
+  const immobilierResponse = offre?.immobilierResponse || {};
 
   return (
-    <div className="singlePage">
+    <div className="singlePage" >
       <div className="details">
         <div className="wrapper">
           {/* Slider */}
@@ -80,10 +78,16 @@ function SingleOffrePage() {
               </div>
             </div>
             <div className="bottom">{immobilierResponse?.description || 'No Description Available'}</div>
+            <div className="chatContainer">
+              <div className="wrapper">
+                <Chat sellerId={offre.userId} />
+              </div>
+            </div>
           </div>
-        </div>
+        </div> 
       </div>
-
+   
+      
 
         {/* Chat 
         <div className="chatContainer">
@@ -97,6 +101,7 @@ function SingleOffrePage() {
       <div className="features">
         <div className="wrapper">
           <p className="title">General</p>
+  
           <div className="listVertical">
             <div className="feature">
               <img src="/utility.png" alt="" />
@@ -112,18 +117,31 @@ function SingleOffrePage() {
                 <p>{immobilierResponse?.petPolicy || "Pets Allowed"}</p>
               </div>
             </div>
-
+            <div className="feature">
+              <img src="/fee.png" alt="" />
+              <div className="featureText">
+                <span>Property Fees</span>
+                <p>{immobilierResponse?.incomePolicy || "Pets Allowed"}</p>
+              </div>
+            </div>
           </div>
 
+
+
           <p className="title">Sizes</p>
+  
           <div className="sizes">
             <div className="size">
               <img src="/size.png" alt="" />
               <span>{immobilierResponse?.size || "80 sqft"}</span>
             </div>
             <div className="size">
+              <img src="/bed.png" alt="" />
+              <span> {immobilierResponse?.bedroom} {immobilierResponse?.bedroom == 1 ? "bedroom" : "bedrooms" } </span>
+            </div>
+            <div className="size">
               <img src="/bath.png" alt="" />
-              <span>{immobilierResponse?.bathroom || "1 bathroom"}</span>
+              <span> {immobilierResponse?.bathroom } {immobilierResponse?.bathroom  == 1 ? "bedroom" : "bedrooms" } </span>
             </div>
           </div>
 

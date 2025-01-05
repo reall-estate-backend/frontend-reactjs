@@ -6,7 +6,7 @@
 
   .imageContainer {
     flex: 2;
-    height: 200px;
+    height: auto;
 
     @include md {
       display: none;
@@ -32,7 +32,7 @@
     }
 
     .title {
-      font-size: 20px;
+      font-size: 26px;
       font-weight: 600;
       color: #444;
       transition: all 0.4s ease;
@@ -44,7 +44,7 @@
     }
 
     .address {
-      font-size: 14px;
+      font-size: 18px;
       display: flex;
       align-items: center;
       gap: 5px;
@@ -52,7 +52,7 @@
     }
 
     .price {
-      font-size: 20px;
+      font-size: 24px;
       font-weight: 300;
       padding: 5px;
       border-radius: 5px;
@@ -68,7 +68,7 @@
       .features {
         display: flex;
         gap: 20px;
-        font-size: 14px;
+        font-size: 19px;
 
         .feature {
           display: flex;

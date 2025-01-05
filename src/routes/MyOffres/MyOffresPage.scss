@@ -20,7 +20,6 @@
     }
 
     .wrapper{
-      padding-right: 50px;
       display: flex;
       flex-direction: column;
       gap: 50px;
@@ -95,6 +94,38 @@
     .wrapper{
       padding: 0px 20px;
       height: 100%;
+    }
+  }
+}
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Assure que le h1 et le bouton occupent les extrémités */
+  padding-top: 5%;
+
+
+
+  button {
+    padding: 10px 20px;
+    background-color: #fece51;
+    color: black;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    max-width: 200px;
+    margin-top: 0; /* Supprime tout décalage supplémentaire */
+    flex-grow: 0; /* Assure que le bouton garde sa taille définie */
+
+    &:hover {
+      background-color: #f0b600;
+      transform: scale(1.05);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(254, 206, 81, 0.7);
     }
   }
 }

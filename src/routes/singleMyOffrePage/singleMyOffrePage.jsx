@@ -3,7 +3,8 @@ import Slider from "../../components/slider/Slider";
 import Map from "../../components/map/Map";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import OffreService from "../../services/OffreService";
+import { request } from "../../helpers/apiService"; 
+
 
 
 function SingleMyOffrePage() {
@@ -15,8 +16,8 @@ function SingleMyOffrePage() {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchOfferDetails = async () => {
-      try{
-        const response = await OffreService.getOfferById(id);
+      try{        
+        const response = await request("GET", `/api/v1/users/getOffre/${id}`);
         setOfferdata(response.data);
         setLoading(false);
       }
@@ -30,8 +31,8 @@ function SingleMyOffrePage() {
   }, [id]);
   const deleteOffer = async () => {
     try {
-      await OffreService.deleteOffer(id);  // Call the delete service method
-      navigate('/Myspace');  // Redirect to Myspace
+      await request('DELETE', `/api/v1/users/deleteOffre/${id}`); 
+      navigate('/Myspace');  
     } catch (erreurDelete) {
       console.error("Error deleting offer:", erreurDelete);
       setErreurDelete("Failed to delete offer.");
@@ -49,7 +50,7 @@ function SingleMyOffrePage() {
 
   const { title, images, description,bedroom, bathroom, price, address, city, size, schoolDistance, busDistance, restaurantDistance, type, property, utilities, petPolicy, incomePolicy } = immobilier;
   return (
-    <div className="singlePage">
+    <div className="singlePage"  style={{ paddingTop: "20px" }} >
        {/* Details offre */}
       <div className="details">
         <div className="wrapper">
@@ -67,9 +68,11 @@ function SingleMyOffrePage() {
 
               <div className="buttons">
                 <Link to={`/UpdateOffre/${offerdata.id}`}>
-                  <button>Update Your Post</button>
+                  <button>Update</button>
                 </Link>
-                <button onClick={deleteOffer}>Delete</button>
+                <Link>
+                  <button onClick={deleteOffer}>Delete</button>
+                </Link>
               </div>
 
             </div>

@@ -10,9 +10,12 @@ export default defineConfig({
         api: 'modern-compiler' // or "modern"
       }
     }
-  }
+  },
+  server: {
+    proxy: {
+      '/api':'http://localhost:8222' 
+      }
+  },
 })
-
-
 
 

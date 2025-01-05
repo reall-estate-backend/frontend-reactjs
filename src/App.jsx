@@ -1,4 +1,3 @@
-import HomePage from "./routes/homePage/homePage";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -17,7 +16,7 @@ import ProfileUpdatePage from "./routes/profileUpdatePage/profileUpdatePage";
 import Prediction from "./routes/prediction/Prediction";
 import UpdatePostPage from "./routes/updatePostPage/updatePostPage";
 import Home from "./routes/Home/home.jsx";
-
+import Completion from "./components/payment/Completion.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -28,10 +27,6 @@ function App() {
         {
           path:"/",
           element:<Home/>
-        },
-        {
-          path:"/HomePage",
-          element:<HomePage/>
         },
         {
           path:"/Offres",
@@ -78,8 +73,12 @@ function App() {
           element:<Register/>
         },
         {
-          path:"/prediction",
+          path:"/prediction/:id",
           element:<Prediction/>
+        },
+        {
+          path:"/completion",
+          element:<Completion/>
         }
       ]
     }

@@ -1,10 +1,12 @@
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import "./Pracing.scss";
 
 
 function CheckoutForm() {
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -24,11 +26,14 @@ function CheckoutForm() {
 
     const { error } = await stripe.confirmPayment({
       elements,
-      confirmParams: {
+     confirmParams: {
         // Make sure to change this to your payment completion page
         return_url: `${window.location.origin}/completion`,
       },
     });
+    if (!error) {
+      navigate('/completion');
+    }
 
     if (error.type === "card_error" || error.type === "validation_error") {
       setMessage(error.message);

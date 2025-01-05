@@ -7,7 +7,7 @@ function CardMyOffre({ item }) {
 
   // Vérifiez que immobilierResponse existe pour éviter une erreur
   if (!immobilier) {
-    return <div className="error">Données de l'immobilier introuvables</div>;
+    return <div className="error"></div>;
   }
 
   const { title, images, bedroom, bathroom, price, address, city } = immobilier;
@@ -23,7 +23,7 @@ function CardMyOffre({ item }) {
             width: '100%', 
             height: '100%', 
             objectFit: 'cover', 
-            borderRadius: '10px'
+            borderRadius: '10px' 
           }} 
         />
       </Link>
@@ -47,10 +47,19 @@ function CardMyOffre({ item }) {
               <span>{bathroom} bathroom{bathroom > 1 && "s"}</span>
             </div>
           </div>
+
+          <div className="icons">
+            <div className="icon" >
+            <Link to={`/prediction/${item.id}`}>
+                <img src="/prediction.png" alt="" />
+              </Link>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
-  );
+  ); 
 }
 
 export default CardMyOffre;

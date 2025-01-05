@@ -1,29 +1,38 @@
-import './Mylist.scss'
+import './Mylist.scss';
 import { useState, useEffect } from "react";
 import CardMyOffre from "../cardMyOffre/cardMyOffre";
-import OffreService from "../../services/OffreService";
-import "./MyList.scss";
-import {listData} from "../../lib/dummydata"
+import { getAuthUser } from "../../helpers/apiService"; 
+import { request } from "../../helpers/apiService"; 
 
-function MyList(){
+function MyList() {
   const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const userId = "67477a5a7e8cf83850b79b91";//à remplacer par user ID authentified
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
-    const fetchOffers = async () => {
-      try {
-        const response = await OffreService.getOffersByUser(userId);
-        setOffers(response.data); // Met à jour les offres avec les données récupérées
-      } catch (err) {
-        setError("Erreur lors de la récupération des offres");
-        console.error(err);
-      } finally {
-        setLoading(false); // Fin du chargement
-      }
-    };
-    fetchOffers(); // Appel de la fonction pour récupérer les données
-  }, [userId]);
+    const authUser = getAuthUser();
+    if (authUser) {
+      setUser(authUser);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      const fetchOffers = async () => {
+        try {
+          const response = await request("GET", `/api/v1/users/allOffers/${user.id}`);
+          setOffers(response.data); 
+        } catch (err) {
+          setError("");
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchOffers(); 
+    }
+  }, [user]); 
 
   if (loading) {
     return <p>Offers Loading...</p>;
@@ -33,18 +42,15 @@ function MyList(){
     return <p>{error}</p>;
   }
 
-
-
-
   return (
-    <div className='list'>
+    <div className='list'  style={{ paddingTop: "40px" }} >
       {offers.length > 0 ? (
         offers.map((item) => <CardMyOffre key={item.id} item={item} />)
       ) : (
         <p>Aucune offre disponible.</p>
       )}
     </div>
-  ) 
+  ); 
 }
 
-export default MyList
+export default MyList;

@@ -37,7 +37,7 @@
           .buttons {
             display: flex;
             justify-content: flex-end; // Align buttons to the right
-            align-items: center; // Vertically center the buttons
+            align-items: right; // Vertically center the buttons
             gap: 20px; // Space between buttons
             width: 100%; // Full width to allow proper alignment
       
@@ -49,8 +49,8 @@
       
             button {
               padding: 10px 20px;
-              background-color: #fece51; // Primary button background color
-              color: black;
+              background-color: #000000; // Primary button background color
+              color: rgb(255, 255, 255);
               font-size: 16px;
               border: none;
               border-radius: 5px;
