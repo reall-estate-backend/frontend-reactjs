@@ -1,8 +1,13 @@
 import './Mylist.scss';
 import { useState, useEffect } from "react";
 import CardMyOffre from "../cardMyOffre/cardMyOffre";
+
 import { getAuthUser } from "../../helpers/apiService"; 
 import { request } from "../../helpers/apiService"; 
+
+import OffreService from "../../services/OffreService";
+//import "./MyList.scss";
+import {listData} from "../../lib/dummydata"
 
 function MyList() {
   const [offers, setOffers] = useState([]);
